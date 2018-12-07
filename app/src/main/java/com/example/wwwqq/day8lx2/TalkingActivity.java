@@ -1,7 +1,6 @@
 package com.example.wwwqq.day8lx2;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -14,9 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextClock;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMMessageListener;
@@ -25,22 +22,20 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 
-import org.xutils.DbManager;
-import org.xutils.ex.DbException;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Liaotian extends AppCompatActivity implements EMMessageListener
+public class TalkingActivity extends AppCompatActivity implements EMMessageListener
 {
     private Button b1;
     private EditText e1;
-    private ListView l1;
-    private String lalala1;
+    private ListView listView;
+    private String userName;
     private String lalala2;
-    final Home home = new Home();
+    final MyListAdapter home = new MyListAdapter();
     private ArrayList<EMMessage> arrayList=new ArrayList<>();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,20 +43,21 @@ public class Liaotian extends AppCompatActivity implements EMMessageListener
         setContentView(R.layout.activity_login);
         b1=findViewById(R.id.b1);
         e1=findViewById(R.id.e1);
-        l1=findViewById(R.id.l1);
+        listView=findViewById(R.id.l1);
 
         final Intent intent=getIntent();
-        lalala1 = intent.getStringExtra("qqq1");
+        userName = intent.getStringExtra("userName");
         lalala2 = intent.getStringExtra("qqq2");
 
-        l1.setAdapter(home);
+        listView.setAdapter(home);
+        getConversationListData();
 
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String string=e1.getText().toString();
                 //创建一条文本消息，content为消息文字内容，toChatUsername为对方用户或者群聊的id，后文皆是如此
-                EMMessage message = EMMessage.createTxtSendMessage(string, lalala1);
+                EMMessage message = EMMessage.createTxtSendMessage(string, userName);
                 message.setChatType(EMMessage.ChatType.Chat);
                 //发送消息
                 EMClient.getInstance().chatManager().sendMessage(message);
@@ -89,6 +85,18 @@ public class Liaotian extends AppCompatActivity implements EMMessageListener
                 e1.setText("");
             }
         });
+    }
+
+    private void getConversationListData(){
+        EMConversation conversation = EMClient.getInstance().chatManager().getConversation(userName);
+        //获取此会话的所有消息
+        List<EMMessage> messages = conversation.getAllMessages();
+        //SDK初始化加载的聊天记录为20条，到顶时需要去DB里获取更多
+//获取startMsgId之前的pagesize条消息，此方法获取的messages SDK会自动存入到此会话中，APP中无需再次把获取到的messages添加到会话中
+//        List<EMMessage> messages = conversation.loadMoreMsgFromDB(startMsgId, 30);
+
+        arrayList.addAll(messages);
+        home.notifyDataSetChanged();
     }
 
     @Override
@@ -142,7 +150,7 @@ public class Liaotian extends AppCompatActivity implements EMMessageListener
         EMClient.getInstance().chatManager().removeMessageListener(this);
     }
 
-    class Home extends BaseAdapter
+    class MyListAdapter extends BaseAdapter
     {
 
         @Override
@@ -166,7 +174,7 @@ public class Liaotian extends AppCompatActivity implements EMMessageListener
             EMMessage emMessage = arrayList.get(i);
             if(emMessage.direct().ordinal()==1)
             {
-                View view1= LayoutInflater.from(Liaotian.this).inflate(R.layout.zuo,null);
+                View view1= LayoutInflater.from(TalkingActivity.this).inflate(R.layout.zuo,null);
                 ImageView i1=view1.findViewById(R.id.i1);
                 TextView t1=view1.findViewById(R.id.t1);
                 t1.setVisibility(View.VISIBLE);
@@ -180,7 +188,7 @@ public class Liaotian extends AppCompatActivity implements EMMessageListener
 
             }else
             {
-                View view1= LayoutInflater.from(Liaotian.this).inflate(R.layout.you,null);
+                View view1= LayoutInflater.from(TalkingActivity.this).inflate(R.layout.you,null);
                 ImageView i1=view1.findViewById(R.id.i1);
                 TextView t1=view1.findViewById(R.id.t1);
                 t1.setVisibility(View.VISIBLE);

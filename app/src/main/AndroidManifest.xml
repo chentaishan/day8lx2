@@ -39,7 +39,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ConversationActivity"></activity>
-        <activity android:name=".Liaotian"></activity>
+        <activity android:name=".TalkingActivity"></activity>
 
         <!-- 设置环信应用的AppKey -->
         <meta-data android:name="EASEMOB_APPKEY"  android:value="1119181127107754#androidday1" />

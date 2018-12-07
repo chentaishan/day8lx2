@@ -1,23 +1,18 @@
 package com.example.wwwqq.day8lx2;
 
 import android.annotation.SuppressLint;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,7 +20,6 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 
 import org.xutils.DbManager;
-import org.xutils.ex.DbException;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
@@ -65,7 +59,7 @@ public class ConversationFragment extends Fragment
 
                 clearUnreadRedPoint( updateSingle(i),messagId,"mmm");
 
-                Intent intent=new Intent(context,Liaotian.class);
+                Intent intent=new Intent(context,TalkingActivity.class);
                 intent.putExtra("qqq1", arrayList.get(i).getName());
                 intent.putExtra("qqq2",arrayList.get(i).getUri());
                 startActivity(intent);
