@@ -34,7 +34,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 @SuppressLint("ValidFragment")
-public class Top1 extends Fragment
+public class ConversationFragment extends Fragment
 {
     private Context context;
     private ListView l1;
@@ -42,7 +42,7 @@ public class Top1 extends Fragment
     private DbManager db;
     private Home home=new Home();
 
-    public Top1(Context context,DbManager db) {
+    public ConversationFragment(Context context, DbManager db) {
         this.context = context;
         this.db=db;
     }

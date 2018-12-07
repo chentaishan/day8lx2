@@ -38,7 +38,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Main_Two"></activity>
+        <activity android:name=".ConversationActivity"></activity>
         <activity android:name=".Liaotian"></activity>
 
         <!-- 设置环信应用的AppKey -->
