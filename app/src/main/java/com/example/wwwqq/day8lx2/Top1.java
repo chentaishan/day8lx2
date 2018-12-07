@@ -30,6 +30,7 @@ import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 
 @SuppressLint("ValidFragment")
@@ -54,7 +55,7 @@ public class Top1 extends Fragment
 
         final Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
 
-        cha();
+        cha(  conversations);
 
         l1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -95,23 +96,23 @@ public class Top1 extends Fragment
     }
 
 
-    private void cha() {
+    private void cha(Map<String, EMConversation> conversations) {
         try {
             arrayList.clear();
-            Cursor cursor = db.execQuery("select * from Menu_tt");
 
-            arrayList.add(new Bean("mmm","https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2215957843,1170124315&fm=27&gp=0.jpg"));
+            Iterator<Map.Entry<String, EMConversation>> entries = conversations.entrySet().iterator();
 
-            while(cursor.moveToNext())
-            {
-                String name = cursor.getString(cursor.getColumnIndex("name"));
-                arrayList.add(new Bean(name,"https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2215957843,1170124315&fm=27&gp=0.jpg"));
+            while (entries.hasNext()) {
+
+                Map.Entry<String, EMConversation> entry = entries.next();
+
+                System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+                arrayList.add(new Bean(entry.getKey(), "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2215957843,1170124315&fm=27&gp=0.jpg"));
+
             }
 
-                Log.i("qqqq",arrayList.size()+"");
-
             l1.setAdapter(home);
-        } catch (DbException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             arrayList.add(new Bean("mmm","https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2215957843,1170124315&fm=27&gp=0.jpg"));
             l1.setAdapter(home);
