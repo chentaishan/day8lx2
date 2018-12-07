@@ -7,7 +7,7 @@ import com.hyphenate.chat.EMOptions;
 
 import org.xutils.x;
 
-public class MyApp extends Application
+public class MyApplication extends Application
 {
     @Override
     public void onCreate() {
